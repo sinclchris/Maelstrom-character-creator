@@ -285,18 +285,33 @@ def TexttoRoll(Roll):
     
 def AttributesLoop(currentattr,careername1):
     #Attribute loop
+    print(currentattr)
     Roll=[]
     Characteristic=[]
     RelevantEntries = [a for a in Careers[careername1].attributes if a != '']
     print(RelevantEntries)
+    print('Calculating attributes and values')
     for i in range(1,len(RelevantEntries)):
-        print(i)
-        Roll.append(sum(TexttoRoll(RelevantEntries[i].split()[0])))
-        print(Roll)
-        Characteristic.append(RelevantEntries[i].split()[1])
-        print(Characteristic)
+        Roll.append(sum(TexttoRoll(RelevantEntries[i].split(maxsplit=1)[0])))
+        Characteristic.append(RelevantEntries[i].split(maxsplit=1)[1])
+    print(Roll)
+    print(Characteristic)
+    print('Adding Values')
     for i in range(0,len(Roll)):
-        currentattr[AttributesMap[Characteristic[i]]]+Roll[i]
+        print('i: ',i)
+        if Characteristic[i] != 'Discretionary':
+            X=AttributesMap[Characteristic[i]]
+            print('Current value ',currentattr[X],' Value to become: ',currentattr[AttributesMap[Characteristic[i]]]+Roll[i],'Roll value: ',Roll[i])
+            print(Characteristic[i])
+            print('X: ',X)
+            print(currentattr)
+            currentattr[X]+=Roll[i]
+            print(currentattr)
+        else:
+            randnum=r.randint(0,9)
+            currentattr[randnum]+=Roll[i]
+            print(currentattr)
+            print('Added ', Roll[i], ' to attribute ',randnum)
     
     return Roll, Characteristic,currentattr
 
@@ -384,7 +399,7 @@ AttributesMap = {
   "Perspective": 6,
   "Perception": 7,
   "Speed": 8,
-  "Agility": 9,
+  "Agility": 9
 }
 Attributes = ['AS','MS','DS','KN','WP','END','PERS','PERC','SPD','AGL']
 AttributeValues = [40,40,40,40,40,40,40,40,40,40]
