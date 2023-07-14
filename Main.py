@@ -283,8 +283,7 @@ def TexttoRoll(Roll):
 
 
     
-def AttributesLoop(currentattr,careername1):
-    #Attribute loop
+def AttributesGen(currentattr,careername1):
     print(currentattr)
     Roll=[]
     Characteristic=[]
@@ -315,6 +314,25 @@ def AttributesLoop(currentattr,careername1):
     
     return Roll, Characteristic,currentattr
 
+def CareerExitGen(CurrentCareer):
+    CareerExitNumbers=Careers[CurrentCareer].careerexitnumbers
+    CareerExits=Careers[CurrentCareer].careerexits
+    TempRoll=d100(1)
+    for i in range(1,len(CareerExitNumbers)):
+        if type(CareerExitNumbers[i])==str:
+            print('i ',i)
+            print('TempRoll ',TempRoll[0])
+            print('Career exit lower bound ',int(CareerExitNumbers[i][0:2]))
+            print('Career exit upper bound ',int(CareerExitNumbers[i][3:6]))
+            if TempRoll[0] in range(int(CareerExitNumbers[i][0:2]),int(CareerExitNumbers[i][3:6])+1):  
+                print('Roll ',TempRoll[0],' is in range' , int(CareerExitNumbers[i][0:2]),int(CareerExitNumbers[i][3:6]))
+                return CareerExits[i]
+        elif type(CareerExitNumbers[i])==int:
+            if TempRoll[0] == int(CareerExitNumbers[i]): 
+                print('Roll ',TempRoll[0],' is ' , int(CareerExitNumbers[i]))
+                return CareerExits[i]
+            
+
 
     
 class career():
@@ -334,7 +352,8 @@ class career():
 #Important to know what number
 #Duration of service, attributes added, abilities added, resources added
 
-
+################################################################################################################################################
+#Process
 
 #script = os.path.realpath(__file__)
 #print("SCript path:", script)
