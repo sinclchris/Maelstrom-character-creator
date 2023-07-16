@@ -42,6 +42,22 @@ def diceroll(x,a,b):
         rolls.append(die)  
     return rolls
 
+#Only works for single digit rolls
+def TexttoRoll(Roll):
+    if Roll[0] != 'D':
+        NoRolls = Roll[0]
+    else:
+        NoRolls = 1
+    NoRolls = int(NoRolls)
+    if Roll[1:] == 'D6' or Roll[1:] == 'd6':
+        return d6(NoRolls)
+    elif Roll[1:] == 'D3' or Roll[1:] == 'd3':
+        return d3(NoRolls)
+    elif Roll[1:] == 'D10' or Roll[1:] == 'd10':
+        return d10(NoRolls)
+    elif Roll[1:] == 'D100' or Roll[1:] == 'd100':
+        return d100(NoRolls)
+
 def Gender():
     d2=r.randint(1,2)
     if d2 == 1:
@@ -261,25 +277,19 @@ def CareerLoop(year,careername1):
     RelevantEntries = [a for a in Careers[careername1].attributes if a != '']
     for i in range(0,len(RelevantEntries)):
         print()
+        
+#Input career and date
+#Gnerate career exit
+#adjust attributes
+#adjust age and date based on duration
+#generate a random event
+#generate resources and equipment
+#return next career, attribute list, attribute adjustments, new age, new date, event, new resources and new equipment
     
     
     return ExitYear
 
-#Only works for single digit rolls
-def TexttoRoll(Roll):
-    if Roll[0] != 'D':
-        NoRolls = Roll[0]
-    else:
-        NoRolls = 1
-    NoRolls = int(NoRolls)
-    if Roll[1:] == 'D6' or Roll[1:] == 'd6':
-        return d6(NoRolls)
-    elif Roll[1:] == 'D3' or Roll[1:] == 'd3':
-        return d3(NoRolls)
-    elif Roll[1:] == 'D10' or Roll[1:] == 'd10':
-        return d10(NoRolls)
-    elif Roll[1:] == 'D100' or Roll[1:] == 'd100':
-        return d100(NoRolls)
+
 
 
     
@@ -331,6 +341,16 @@ def CareerExitGen(CurrentCareer):
             if TempRoll[0] == int(CareerExitNumbers[i]): 
                 print('Roll ',TempRoll[0],' is ' , int(CareerExitNumbers[i]))
                 return CareerExits[i]
+            
+def RandomEventGen(CurrentCareer):
+    Types=Careers[CurrentCareer].randomevent
+    Types = [a for a in Careers[CurrentCareer].randomevent if a != '']
+    NoPossibleTypes = len(Types)-1
+    if NoPossibleTypes == 1:
+        return Types[0]
+    else:
+        Roll = r.randint(1,len(Types)-1)
+        return Types[Roll]
             
 
 
