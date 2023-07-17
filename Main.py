@@ -324,6 +324,21 @@ def AttributesGen(currentattr,careername1):
     
     return Roll, Characteristic,currentattr
 
+def ResourcesGen(CurrentCareer):
+    Cash = []
+    Resources=[]
+    ResourcesRolls= [a for a in Careers[CurrentCareer].resourcenumbers if a != '']
+    ResourcesList = [a for a in Careers[CurrentCareer].resources if a != '']
+    for i in range(1,len(ResourcesList)):
+        if ResourcesList[i] == 'Cash':
+            Cash.append(sum(TexttoRoll(ResourcesRolls[i])))
+        else:
+            Roll = sum(d100(1))
+            print(Roll)
+            if Roll <= int(ResourcesRolls[i]):
+                Resources.append(ResourcesList[i])
+    return Cash, Resources
+
 def CareerExitGen(CurrentCareer):
     CareerExitNumbers=Careers[CurrentCareer].careerexitnumbers
     CareerExits=Careers[CurrentCareer].careerexits
@@ -484,12 +499,12 @@ CharacterTemplate.at[3,9] = Supernatural
 CharacterTemplate.at[4,9] = Patron
 CharacterTemplate.at[0,15] = Age
 CharacterTemplate.at[1,15] = Born
-CharacterTemplate.at[10,1] = CareerPath[0][0]
-CharacterTemplate.at[11,1] = CareerPath[1][0]
-CharacterTemplate.at[12,1] = CareerPath[2][0]
-CharacterTemplate.at[13,1] = CareerPath[3][0]
-CharacterTemplate.at[14,1] = CareerPath[4][0]
-CharacterTemplate.at[15,1] = CareerPath[5][0]
+#CharacterTemplate.at[10,1] = CareerPath[0][0]
+#CharacterTemplate.at[11,1] = CareerPath[1][0]
+#CharacterTemplate.at[12,1] = CareerPath[2][0]
+#CharacterTemplate.at[13,1] = CareerPath[3][0]
+#CharacterTemplate.at[14,1] = CareerPath[4][0]
+#CharacterTemplate.at[15,1] = CareerPath[5][0]
 
 #Output the sheet to folder
 if (Output):
