@@ -289,9 +289,14 @@ def CareerLoop(year,careername1):
     
     return ExitYear
 
+def AgeGen(CurrentAge,CurrentCareer):
+    ExitAge = CurrentAge + CurrentCareer.duration[1]
+    return ExitAge
 
-
-
+def YearGen(CurrentYear,CurrentCareer):
+    ExitYear = CurrentYear + CurrentCareer.duration[1]
+    return ExitYear
+    
     
 def AttributesGen(currentattr,careername1):
     print(currentattr)
