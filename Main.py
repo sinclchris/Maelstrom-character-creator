@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Oct 31 12:01:19 2023
+
+@author: cex
+"""
+
 import os
 import pandas as pd
 import random as r
@@ -269,14 +276,23 @@ def FirstCareerSelection(Table,Gender,j):
 #Return duration
 #Return additions to stats
 #
-def CareerLoop(year,careername1):
-
-    ExitYear = year + careername1.duration[1]
+def CareerLoop(year,careername1,age,attributes):
+    print('##################',attributes)
+    ExitYear = YearGen(year,careername1)
+    print('#####Start year: ',year,' Exit Year: ', ExitYear)
+    ExitAge = AgeGen(age,careername1)
+    print('#####Start age: ',age,' Exit age: ', ExitAge)
+    ExitAttributes = AttributesGen(attributes,careername1)
+    print('##################',attributes)
+    print('#####Starting Attributes: ',attributes,' Exit Attributes: ', ExitAttributes[2])
+    ExitCareer = CareerExitGen(careername1)
+    print('#####Starting Career: ',careername1,' Exit Career: ', ExitCareer)
+    ExitRandomEvent = RandomEventGen(careername1)
+    print('#####Exit Random Event: ', ExitRandomEvent)
+    ExitResources = ResourcesGen(careername1)
+    print('#####Start Resources: ',year,' Exit Resources: ' , ExitResources[0], ' cash, ', ExitResources[1], ' items')
     
-    #Attribute loop
-    RelevantEntries = [a for a in Careers[careername1].attributes if a != '']
-    for i in range(0,len(RelevantEntries)):
-        print()
+    return ExitYear, ExitAge, ExitAttributes, ExitCareer, ExitRandomEvent, ExitResources    
         
 #Input career and date
 #Gnerate career exit
@@ -290,11 +306,11 @@ def CareerLoop(year,careername1):
     return ExitYear
 
 def AgeGen(CurrentAge,CurrentCareer):
-    ExitAge = CurrentAge + CurrentCareer.duration[1]
+    ExitAge = CurrentAge + Careers[CurrentCareer].duration[1]
     return ExitAge
 
 def YearGen(CurrentYear,CurrentCareer):
-    ExitYear = CurrentYear + CurrentCareer.duration[1]
+    ExitYear = CurrentYear + Careers[CurrentCareer].duration[1]
     return ExitYear
     
     
@@ -325,7 +341,8 @@ def AttributesGen(currentattr,careername1):
             randnum=r.randint(0,9)
             currentattr[randnum]+=Roll[i]
             print(currentattr)
-            print('Added ', Roll[i], ' to attribute ',randnum)
+            print('Added a discretionary ', Roll[i], ' to attribute ',randnum)
+    print(currentattr)
     
     return Roll, Characteristic,currentattr
 
@@ -397,8 +414,8 @@ class career():
 
 #script = os.path.realpath(__file__)
 #print("SCript path:", script)
-
-directory = 'C:\\Users\\Chris\\OneDrive\\Projects\\Python\\Maelstrom Character Creator'
+user='Chris'
+directory = 'C:\\Users\\'+user+'\\OneDrive\\Projects\\Python\\Maelstrom Character Creator'
 os.chdir(directory)
 os.getcwd()
 
@@ -406,7 +423,7 @@ os.getcwd()
 Output = False
 ################################
 
-filedirectory = 'C:\\Users\\Chris\\OneDrive\\Projects\\Python\\Maelstrom Character Creator\\Data Files'
+filedirectory = 'C:\\Users\\'+user+'\\OneDrive\\Projects\\Python\\Maelstrom Character Creator\\Data Files'
 ReadCSV={}
 ReadXLSX={}
 for file in os.listdir(filedirectory):
@@ -421,7 +438,8 @@ for file in os.listdir(filedirectory):
      else:
          continue
      
-careersdirectory = 'C:\\Users\\Chris\\OneDrive\\Projects\\Python\\Maelstrom Character Creator\\Data Files\\Careers'
+#Set careers directory, read in individual careers and append to a dictionary
+careersdirectory = 'C:\\Users\\'+user+'\\OneDrive\\Projects\\Python\\Maelstrom Character Creator\\Data Files\\Careers'
 ReadCareers={}
 Careers = {}
 for file in os.listdir(careersdirectory):
@@ -455,7 +473,7 @@ AttributesMap = {
   "Knowledge": 3,
   "Willpower": 4,
   "Endurance": 5,
-  "Perspective": 6,
+  "Persuasion": 6,
   "Perception": 7,
   "Speed": 8,
   "Agility": 9
@@ -491,6 +509,11 @@ ClassAttributes = [a for a in dir(Careers[FirstCareer]) if not a.startswith('__'
 for i in range(0,10):
     print(i)
     CareerPath[0][i] = getattr(Careers[FirstCareer],ClassAttributes[i])[1]
+#Career Loop Appraoch, possibly nested loops
+
+SecondCareer=CareerLoop((Born+Age),FirstCareer,Age,AttributeValues)
+
+ProfessionLine=['Careername','StartAge','Duration','startyear','finyear','attributes 6-15']
 
 #Assign characteristic to the sheet
 CharacterTemplate.at[0,9] = Race
@@ -504,7 +527,9 @@ CharacterTemplate.at[3,9] = Supernatural
 CharacterTemplate.at[4,9] = Patron
 CharacterTemplate.at[0,15] = Age
 CharacterTemplate.at[1,15] = Born
-#CharacterTemplate.at[10,1] = CareerPath[0][0]
+CharacterTemplate.at[10,1] = FirstCareer
+#CharacterTemplate.at[10,2] = #startage
+#CharacterTemplate.at[10,3] = 
 #CharacterTemplate.at[11,1] = CareerPath[1][0]
 #CharacterTemplate.at[12,1] = CareerPath[2][0]
 #CharacterTemplate.at[13,1] = CareerPath[3][0]
