@@ -251,16 +251,24 @@ def FirstCareer(Social,Gender):
         if TempRoll[0] in range(int(OutcastFirstCareer[0][j][0:2]),int(OutcastFirstCareer[0][j][3:6])+1):  
             print('Roll is in range' , int(OutcastFirstCareer[0][j][0:2]),int(OutcastFirstCareer[0][j][3:6]))
             if Social == 'Outcast':
-                return FirstCareerSelection(OutcastFirstCareer,Gender,j)
+                firstcareer=FirstCareerSelection(OutcastFirstCareer,Gender,j)
+                print('First Career is: ',firstcareer)
+                return firstcareer
                 #query outcast first career
             elif Social == 'Peasant':
-                return FirstCareerSelection(PeasantFirstCareer,Gender,j)
+                firstcareer=FirstCareerSelection(PeasantFirstCareer,Gender,j)
+                print('First Career is: ',firstcareer)
+                return firstcareer
                 #query peasant first career
             elif Social == 'Townsman':
-                return FirstCareerSelection(TownsmanFirstCareer,Gender,j)
+                firstcareer=FirstCareerSelection(TownsmanFirstCareer,Gender,j)
+                print('First Career is: ',firstcareer)
+                return firstcareer
                 #query Townsman first career
             elif Social == 'Lesser Nobility':
-                return FirstCareerSelection(NobilityFirstCareer,Gender,j)
+                firstcareer=FirstCareerSelection(NobilityFirstCareer,Gender,j)
+                print('First Career is: ',firstcareer)
+                return firstcareer
                 #query lesser nobility first career
                 
 def FirstCareerSelection(Table,Gender,j):
@@ -278,14 +286,14 @@ def FirstCareerSelection(Table,Gender,j):
 #
 def CareerLoop(year,careername1,age,attributes):
     print('##################',attributes)
-    ExitYear = YearGen(year,careername1)
+    ExitYear = (year,YearGen(year,careername1))
     print('#####Start year: ',year,' Exit Year: ', ExitYear)
-    ExitAge = AgeGen(age,careername1)
+    ExitAge = (age,AgeGen(age,careername1))
     print('#####Start age: ',age,' Exit age: ', ExitAge)
     ExitAttributes = AttributesGen(attributes,careername1)
     print('##################',attributes)
     print('#####Starting Attributes: ',attributes,' Exit Attributes: ', ExitAttributes[2])
-    ExitCareer = CareerExitGen(careername1)
+    ExitCareer = (careername1,CareerExitGen(careername1))
     print('#####Starting Career: ',careername1,' Exit Career: ', ExitCareer)
     ExitRandomEvent = RandomEventGen(careername1)
     print('#####Exit Random Event: ', ExitRandomEvent)
@@ -414,7 +422,8 @@ class career():
 
 #script = os.path.realpath(__file__)
 #print("SCript path:", script)
-user='Chris'
+#user='Chris'
+user='cex'
 directory = 'C:\\Users\\'+user+'\\OneDrive\\Projects\\Python\\Maelstrom Character Creator'
 os.chdir(directory)
 os.getcwd()
@@ -501,6 +510,8 @@ Born=1073
 Gender = Gender()
 Name=Name(Race,Gender,ExpandedNames)
 FirstCareer = FirstCareer(Social,Gender)
+ResourcesCum=[]
+MoneyCum=[]
 
 #Generating career
 CareerPath[0][0] = FirstCareer
@@ -512,8 +523,15 @@ for i in range(0,10):
 #Career Loop Appraoch, possibly nested loops
 
 SecondCareer=CareerLoop((Born+Age),FirstCareer,Age,AttributeValues)
+AppendCareer=[SecondCareer[3][0],SecondCareer[1][0],SecondCareer[0][1]-SecondCareer[0][0],SecondCareer[0][0],SecondCareer[0][1], 
+              SecondCareer[2][2][0],SecondCareer[2][2][1],SecondCareer[2][2][2],SecondCareer[2][2][3],SecondCareer[2][2][4], 
+                  SecondCareer[2][2][5],SecondCareer[2][2][6],SecondCareer[2][2][7],SecondCareer[2][2][8],SecondCareer[2][2][9], 
+                      None, None, None, SecondCareer[4], SecondCareer[3][1], MoneyCum+SecondCareer[5][0], ResourcesCum+SecondCareer[5][1]]
+MoneyCum=MoneyCum+SecondCareer[5][0]
+ResourcesCum=ResourcesCum+SecondCareer[5][1]
+AppendCareer = [str(x) for x in AppendCareer]
 
-ProfessionLine=['Careername','StartAge','Duration','startyear','finyear','attributes 6-15']
+
 
 #Assign characteristic to the sheet
 CharacterTemplate.at[0,9] = Race
@@ -528,6 +546,21 @@ CharacterTemplate.at[4,9] = Patron
 CharacterTemplate.at[0,15] = Age
 CharacterTemplate.at[1,15] = Born
 CharacterTemplate.at[10,1] = FirstCareer
+for j in range(10,16):
+    SecondCareer=CareerLoop(SecondCareer[0][1],SecondCareer[3][1],SecondCareer[1][1],SecondCareer[2][2])
+    AppendCareer=[SecondCareer[3][0],SecondCareer[1][0],SecondCareer[0][1]-SecondCareer[0][0],SecondCareer[0][0],SecondCareer[0][1], 
+              SecondCareer[2][2][0],SecondCareer[2][2][1],SecondCareer[2][2][2],SecondCareer[2][2][3],SecondCareer[2][2][4], 
+                  SecondCareer[2][2][5],SecondCareer[2][2][6],SecondCareer[2][2][7],SecondCareer[2][2][8],SecondCareer[2][2][9], 
+                      None, None, None, SecondCareer[4], SecondCareer[3][1], sum(MoneyCum+SecondCareer[5][0]), ResourcesCum+SecondCareer[5][1]]
+    MoneyCum=MoneyCum+SecondCareer[5][0]
+    ResourcesCum=ResourcesCum+SecondCareer[5][1]
+    AppendCareer = [str(x) for x in AppendCareer]
+    for i in range(1,22):
+        CharacterTemplate.at[j,i] = AppendCareer[i-1]
+        if i==21:
+            CharacterTemplate.at[j,22] = AppendCareer[21]
+    
+    
 #CharacterTemplate.at[10,2] = #startage
 #CharacterTemplate.at[10,3] = 
 #CharacterTemplate.at[11,1] = CareerPath[1][0]
