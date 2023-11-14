@@ -328,7 +328,7 @@ def AttributesGen(currentattr,careername1):
     Characteristic=[]
     RelevantEntries = [a for a in Careers[careername1].attributes if a != '']
     print(RelevantEntries)
-    print('Calculating attributes and values')
+    print('Calculating attributes and values for career: ',careername1)
     for i in range(1,len(RelevantEntries)):
         Roll.append(sum(TexttoRoll(RelevantEntries[i].split(maxsplit=1)[0])))
         Characteristic.append(RelevantEntries[i].split(maxsplit=1)[1])
@@ -481,6 +481,7 @@ AttributesMap = {
   "Defence Skill": 2,
   "Knowledge": 3,
   "Willpower": 4,
+  "Will" : 4,
   "Endurance": 5,
   "Persuasion": 6,
   "Perception": 7,
