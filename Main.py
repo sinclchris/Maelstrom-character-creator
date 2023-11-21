@@ -392,7 +392,7 @@ def RandomEventGen(CurrentCareer):
     Types = [a for a in Careers[CurrentCareer].randomevent if a != '']
     NoPossibleTypes = len(Types)-1
     if NoPossibleTypes == 1:
-        return Types[0]
+        return Types[1]
     else:
         Roll = r.randint(1,len(Types)-1)
         return Types[Roll]
@@ -424,15 +424,15 @@ class career():
 #print("SCript path:", script)
 #user='Chris'
 user='cex'
-directory = 'C:\\Users\\'+user+'\\OneDrive\\Projects\\Python\\Maelstrom Character Creator'
-os.chdir(directory)
-os.getcwd()
+#directory = 'C:\\Users\\'+user+'\\OneDrive\\Projects\\Python\\Maelstrom Character Creator'
+#os.chdir(directory)
+directory = os.getcwd()
 
 ################################
-Output = False
+Output = input('Output to File y/n')
 ################################
 
-filedirectory = 'C:\\Users\\'+user+'\\OneDrive\\Projects\\Python\\Maelstrom Character Creator\\Data Files'
+filedirectory = directory + '\\Data Files'
 ReadCSV={}
 ReadXLSX={}
 for file in os.listdir(filedirectory):
@@ -448,7 +448,7 @@ for file in os.listdir(filedirectory):
          continue
      
 #Set careers directory, read in individual careers and append to a dictionary
-careersdirectory = 'C:\\Users\\'+user+'\\OneDrive\\Projects\\Python\\Maelstrom Character Creator\\Data Files\\Careers'
+careersdirectory = directory + '\\Data Files\\Careers'
 ReadCareers={}
 Careers = {}
 for file in os.listdir(careersdirectory):
@@ -547,6 +547,8 @@ CharacterTemplate.at[4,9] = Patron
 CharacterTemplate.at[0,15] = Age
 CharacterTemplate.at[1,15] = Born
 CharacterTemplate.at[10,1] = FirstCareer
+for i in range(6,16):
+    CharacterTemplate.at[9,i] = AttributeAdjust[i-6]
 for j in range(10,16):
     SecondCareer=CareerLoop(SecondCareer[0][1],SecondCareer[3][1],SecondCareer[1][1],SecondCareer[2][2])
     AppendCareer=[SecondCareer[3][0],SecondCareer[1][0],SecondCareer[0][1]-SecondCareer[0][0],SecondCareer[0][0],SecondCareer[0][1], 
@@ -571,5 +573,6 @@ for j in range(10,16):
 #CharacterTemplate.at[15,1] = CareerPath[5][0]
 
 #Output the sheet to folder
-if (Output):
-    CharacterTemplate.to_excel(r'C:\\Users\\Chris\\OneDrive\\Projects\\Maelstrom Character Creator\\Generated Character\\Character.xlsx', index = False)
+OutputDirectory = directory + '\\Generated Character\\Character.xlsx'
+if (Output=='y'):
+    CharacterTemplate.to_excel(directory+'\\Generated Character\\Character.xlsx', index = False)
